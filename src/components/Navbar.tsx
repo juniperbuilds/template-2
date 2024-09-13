@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { Bell, User } from 'lucide-react'
 
 const Navbar = () => {
-  const { user, signOut } = useAuth()
+  const { user, logout } = useAuth()
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
   if (!user) return null
@@ -46,7 +46,7 @@ const Navbar = () => {
                   <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out">
                     Profile
                   </Link>
-                  <button onClick={signOut} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out">
+                  <button onClick={logout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out">
                     Logout
                   </button>
                 </div>

@@ -32,13 +32,10 @@ export const signInWithGoogle = async () => {
 export const addDocument = (collectionName: string, data: any) =>
   addDoc(collection(db, collectionName), data);
 
-export const getDocuments = async (collectionName: string) => {
+export async function getDocuments<T>(collectionName: string): Promise<T[]> {
   const querySnapshot = await getDocs(collection(db, collectionName));
-  return querySnapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data()
-  }));
-};
+  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as T);
+}
 
 export const updateDocument = (collectionName: string, id: string, data: any) =>
   updateDoc(doc(db, collectionName, id), data);

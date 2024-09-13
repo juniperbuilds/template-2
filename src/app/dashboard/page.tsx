@@ -7,6 +7,7 @@ import Link from 'next/link';
 
 interface Permit {
   id: string;
+  userId: string; // Added this property
   location: string;
   type: string;
   startDate: string;
@@ -16,13 +17,19 @@ interface Permit {
 export default function Dashboard() {
   const { user } = useAuth();
   const [userPermits, setUserPermits] = useState<Permit[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {
       const fetchUserPermits = async () => {
-        const permits = await getDocuments('permits');
-        const filteredPermits = permits.filter((permit: Permit) => permit.userId === user.uid);
-        setUserPermits(filteredPermits);
+        try {
+          const permits = await getDocuments<Permit>('permits');
+          const filteredPermits = permits.filter((permit) => permit.userId === user.uid);
+          setUserPermits(filteredPermits);
+        } catch (err) {
+          console.error('Error fetching permits:', err);
+          setError('Failed to fetch permits. Please try again later.');
+        }
       };
       fetchUserPermits();
     }
@@ -39,7 +46,19 @@ export default function Dashboard() {
         List New Permit
       </Link>
       <h2 className="text-2xl font-semibold mt-8 mb-4">Your Permits</h2>
-      {/* Display user's permits */}
+      {error && <p className="text-red-500">{error}</p>}
+      {userPermits.length > 0 ? (
+        <ul>
+          {userPermits.map((permit) => (
+            <li key={permit.id} className="mb-4">
+              <h3 className="font-semibold">{permit.type} - {permit.location}</h3>
+              <p>From: {permit.startDate} To: {permit.endDate}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>You have no permits listed.</p>
+      )}
       <h2 className="text-2xl font-semibold mt-8 mb-4">Your Messages</h2>
       {/* Display user's messages */}
     </div>
