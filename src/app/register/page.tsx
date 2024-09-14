@@ -1,12 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FaGoogle } from 'react-icons/fa';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { useAuth } from '@/lib/hooks/useAuth';
 
 export default function Register() {
   const [firstName, setFirstName] = useState('');
@@ -14,35 +12,11 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const router = useRouter();
-  const { register, signInWithGoogle } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    if (password !== confirmPassword) {
-      setError("Passwords don't match");
-      return;
-    }
-    try {
-      await register(email, password);
-      // TODO: Save firstName and lastName to user profile
-      router.push('/dashboard');
-    } catch (error) {
-      console.error('Registration error:', error);
-      setError('Failed to register. Please try again.');
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    try {
-      await signInWithGoogle();
-      router.push('/dashboard');
-    } catch (error) {
-      console.error('Google sign-in error:', error);
-      setError('Failed to sign in with Google. Please try again.');
-    }
+    // Handle registration logic here
+    console.log('Registration attempted with:', { firstName, lastName, email, password, confirmPassword });
   };
 
   return (

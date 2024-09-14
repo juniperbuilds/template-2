@@ -1,40 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link'; // Add this import
+import Link from 'next/link';
 import { FaGoogle } from 'react-icons/fa';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { useAuth } from '@/lib/hooks/useAuth';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const router = useRouter();
-  const { login, signInWithGoogle } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    try {
-      await login(email, password);
-      router.push('/dashboard');
-    } catch (error) {
-      console.error('Login error:', error);
-      setError('Failed to sign in. Please check your credentials.');
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    try {
-      await signInWithGoogle();
-      router.push('/dashboard');
-    } catch (error) {
-      console.error('Google sign-in error:', error);
-      setError('Failed to sign in with Google. Please try again.');
-    }
+    // Handle login logic here
+    console.log('Login attempted with:', email, password);
   };
 
   return (
@@ -77,8 +56,6 @@ export default function Login() {
               </div>
             </div>
 
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-
             <div>
               <button
                 type="submit"
@@ -101,7 +78,6 @@ export default function Login() {
 
             <div className="mt-6">
               <button
-                onClick={handleGoogleSignIn}
                 className="w-full flex items-center justify-center px-4 py-2 border border-[#0d2600] rounded-md shadow-sm text-sm font-medium text-[#0d2600] bg-white hover:bg-gray-50"
               >
                 <FaGoogle className="mr-2" />
@@ -110,14 +86,12 @@ export default function Login() {
             </div>
           </div>
 
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
-              <Link href="/register" className="font-medium text-[#0d2600] hover:text-[#3c3833]">
-                Register here
-              </Link>
-            </p>
-          </div>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Don't have an account?{' '}
+            <Link href="/register" className="font-medium text-[#0d2600] hover:text-[#3c3833]">
+              Register here
+            </Link>
+          </p>
         </div>
       </main>
       <Footer />
